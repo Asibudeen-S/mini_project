@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}Departments{% endblock %}
+{% block page_heading %}Departments{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">ORGANIZATION SETUP</div><p class="muted">Organize students and classes into departments.</p></div></div>
+<div class="section-grid management-grid"><section class="panel"><div class="panel-heading"><div><h3>Add department</h3><p>Create a new department in your organization.</p></div></div><form method="post" novalidate>{{ form.hidden_tag() }}{{ field(form.name) }}{{ field(form.code, 'Short code used in reports and class lists.') }}<div class="form-actions">{{ form.submit(class_='btn btn-primary') }}</div></form></section>
+<section class="panel table-panel"><div class="panel-heading"><div><h3>Departments</h3><p>Up to 100 student records per department · {{ departments|length }} configured</p></div></div>{% if departments %}<div class="table-scroll"><table><thead><tr><th>Department</th><th>Code</th><th>Students / limit</th><th>HODs & staff</th><th>Classes</th><th></th></tr></thead><tbody>{% for department in departments %}<tr><td><b>{{ department.name }}</b></td><td><span class="code-pill">{{ department.code }}</span></td><td>{{ student_counts[department.id] }} / 100</td><td>{{ department.users|length - student_counts[department.id] }}</td><td>{{ department.subjects|length }}</td><td><a class="text-link" href="{{ url_for('main.edit_department', department_id=department.id) }}">Edit</a></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">No departments created yet.</div>{% endif %}</section></div>
+{% endblock %}

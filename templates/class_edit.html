@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}Edit class{% endblock %}
+{% block page_heading %}Edit class{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">COURSE CATALOG</div><p class="muted">Update class, year batch, timetable, and enrollment for {{ subject.code }}.</p></div><a class="btn btn-outline" href="{{ url_for('main.classes') }}">← Back to classes</a></div><section class="panel narrow-panel"><form method="post" novalidate>{{ form.hidden_tag() }}{{ field(form.name) }}{{ field(form.code) }}{{ field(form.department_id) }}{{ field(form.study_year) }}{{ field(form.teacher_id) }}<div class="form-grid two-cols">{{ field(form.weekday) }}{{ field(form.room) }}{{ field(form.start_time) }}{{ field(form.end_time) }}</div>{{ field(form.student_ids, 'Enroll only active students from this department and year. Hold Ctrl / Command to select several.') }}<div class="form-actions"><a class="btn btn-outline" href="{{ url_for('main.classes') }}">Cancel</a>{{ form.submit(class_='btn btn-primary') }}</div></form></section>
+{% endblock %}

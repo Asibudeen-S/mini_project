@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}Settings{% endblock %}
+{% block page_heading %}System settings{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">SYSTEM CONFIGURATION</div><p class="muted">Configure organization-wide attendance alerts.</p></div></div><section class="panel narrow-panel"><div class="panel-heading"><div><h3>Low attendance alerts</h3><p>Students below this percentage are flagged in HOD dashboards.</p></div></div><form method="post" novalidate>{{ form.hidden_tag() }}{{ field(form.attendance_threshold, 'A percentage from 0 to 100. Excused sessions are excluded.') }}<div class="form-actions">{{ form.submit(class_='btn btn-primary') }}</div></form></section>
+{% endblock %}

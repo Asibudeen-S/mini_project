@@ -1,0 +1,4 @@
+{% extends 'base.html' %}
+{% block title %}Access denied{% endblock %}
+{% block page_heading %}Access denied{% endblock %}
+{% block content %}<section class="panel error-panel"><span class="error-code">403</span><h2>You don’t have access to this page.</h2><p class="muted">Your account may not have the role or class assignment needed for this action.</p><a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">Return to overview</a></section>{% endblock %}

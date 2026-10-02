@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field, status_badge %}
+{% block title %}My leave requests{% endblock %}
+{% block page_heading %}My leave requests{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">TIME AWAY</div><p class="muted">Submit a request and follow its review status here.</p></div></div>
+<div class="section-grid leave-page-grid"><section class="panel"><div class="panel-heading"><div><h3>Request leave</h3><p>Share your dates and reason with your instructor.</p></div></div><form method="post" enctype="multipart/form-data" novalidate>{{ form.hidden_tag() }}<div class="form-grid two-cols">{{ field(form.start_date) }}{{ field(form.end_date) }}</div>{{ field(form.reason) }}{{ field(form.attachment, 'PDF, PNG, JPG, DOC, or DOCX · 8 MB max') }}<div class="form-actions">{{ form.submit(class_='btn btn-primary') }}</div></form></section>
+<section class="panel"><div class="panel-heading"><div><h3>Request history</h3><p>Most recent requests first</p></div></div>{% if requests %}<div class="leave-history-list">{% for leave in requests %}<article class="leave-card"><div class="leave-card-head"><div><b>{{ leave.start_date.strftime('%b %d') }} – {{ leave.end_date.strftime('%b %d, %Y') }}</b><small>Submitted {{ leave.created_at.strftime('%b %d, %Y') }}</small></div>{{ status_badge(leave.status) }}</div><p>{{ leave.reason }}</p>{% if leave.attachment_filename %}<a class="text-link" href="{{ url_for('main.leave_attachment', leave_id=leave.id) }}">↳ {{ leave.attachment_original_name or 'Supporting document' }}</a>{% endif %}{% if leave.reviewed_by %}<small class="reviewed-by">Reviewed by {{ leave.reviewed_by.name }}{% if leave.reviewed_at %} · {{ leave.reviewed_at.strftime('%b %d, %Y') }}{% endif %}</small>{% endif %}</article>{% endfor %}</div>{% else %}<div class="empty-state">You have not submitted any requests.</div>{% endif %}</section></div>
+{% endblock %}

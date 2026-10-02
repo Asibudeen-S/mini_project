@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Audit log{% endblock %}
+{% block page_heading %}Audit log{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">SYSTEM ACTIVITY</div><p class="muted">Administrative and attendance changes, newest first. Showing up to 300 events.</p></div></div><section class="panel table-panel">{% if logs %}<div class="table-scroll"><table><thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Record</th><th>Details</th></tr></thead><tbody>{% for log in logs %}<tr><td>{{ log.created_at.strftime('%b %d, %Y %H:%M') }}</td><td>{{ log.actor.name if log.actor else 'System' }}</td><td><b>{{ log.action|replace('_', ' ')|title }}</b></td><td>{{ log.entity_type|replace('_', ' ')|title }}{% if log.entity_id %} #{{ log.entity_id }}{% endif %}</td><td>{{ log.details or '—' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">No audit events have been recorded.</div>{% endif %}</section>
+{% endblock %}

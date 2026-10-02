@@ -1,0 +1,16 @@
+{% macro field(field, hint=None, class_name='') -%}
+  <div class="form-field {{ class_name }} {% if field.errors %}has-error{% endif %}">
+    {{ field.label(class_='field-label') }}
+    {% if field.type == 'TextAreaField' %}{{ field(class_='input textarea', rows=4, placeholder=field.label.text) }}
+    {% elif field.type == 'SelectMultipleField' %}{{ field(class_='input select multiple-select', size=5) }}
+    {% elif field.type == 'SelectField' %}{{ field(class_='input select') }}
+    {% elif field.type == 'FileField' %}{{ field(class_='input file-input') }}
+    {% else %}{{ field(class_='input', placeholder=field.label.text) }}{% endif %}
+    {% if hint %}<small class="field-hint">{{ hint }}</small>{% endif %}
+    {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+  </div>
+{%- endmacro %}
+
+{% macro status_badge(value) -%}
+  <span class="status-badge status-{{ value|lower }}">{{ value|replace('_', ' ')|title }}</span>
+{%- endmacro %}

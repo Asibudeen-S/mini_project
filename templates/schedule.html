@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}My schedule{% endblock %}
+{% block page_heading %}My schedule{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">WEEKLY TIMETABLE</div><p class="muted">{{ current_user.department.name if current_user.department else 'Department not assigned' }} · Year {{ current_user.study_year or '—' }}</p></div></div>
+<section class="panel table-panel">{% if subjects %}<div class="table-scroll"><table><thead><tr><th>Day</th><th>Time</th><th>Course</th><th>Room</th><th>HOD</th></tr></thead><tbody>{% for subject in subjects %}<tr><td>{{ subject.weekday or 'To be scheduled' }}</td><td>{{ subject.start_time or '—' }}{% if subject.end_time %}–{{ subject.end_time }}{% endif %}</td><td><b>{{ subject.name }}</b><small class="table-sub">{{ subject.code }}</small></td><td>{{ subject.room or '—' }}</td><td>{{ subject.teacher.name if subject.teacher else '—' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">You are not enrolled in a scheduled class yet.</div>{% endif %}</section>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import status_badge %}
+{% block title %}Attendance history{% endblock %}
+{% block page_heading %}Attendance history{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">YOUR RECORD</div><p class="muted">Detailed attendance history across your enrolled classes.</p></div></div>
+<section class="panel table-panel"><div class="panel-heading"><div><h3>All sessions</h3><p>{{ items|length }} attendance records · target {{ threshold|round|int }}%</p></div></div>{% if items %}<div class="table-scroll"><table><thead><tr><th>Date</th><th>Class</th><th>Session</th><th>Status</th><th>Remarks</th></tr></thead><tbody>{% for item in items %}<tr><td>{{ item.record.date.strftime('%b %d, %Y') }}</td><td><b>{{ item.record.subject.name }}</b><small class="table-sub">{{ item.record.subject.code }}</small></td><td>{{ item.record.session }}</td><td>{{ status_badge(item.status) }}</td><td>{{ item.remarks or '—' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">Your attendance history will appear here after your first class is marked.</div>{% endif %}</section>
+{% endblock %}

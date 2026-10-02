@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}Add user{% endblock %}
+{% block page_heading %}Add user account{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">ACCESS MANAGEMENT</div><p class="muted">Create a department HOD or student login. The single admin account is provisioned separately.</p></div><a class="btn btn-outline" href="{{ url_for('main.users') }}">← Back to users</a></div><section class="panel narrow-panel"><form method="post" novalidate>{{ form.hidden_tag() }}{{ field(form.name) }}{{ field(form.email) }}<div class="form-grid two-cols">{{ field(form.role) }}{{ field(form.status) }}</div>{{ field(form.department_id) }}{{ field(form.study_year, 'Required for student accounts; select Not applicable for an HOD.') }}{{ field(form.password, 'Temporary login password; at least 10 characters.') }}<div class="form-actions"><a class="btn btn-outline" href="{{ url_for('main.users') }}">Cancel</a>{{ form.submit(class_='btn btn-primary') }}</div></form></section>
+{% endblock %}

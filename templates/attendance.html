@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import status_badge %}
+{% block title %}Attendance{% endblock %}
+{% block page_heading %}Attendance{% endblock %}
+{% block content %}
+<div class="page-intro-row"><div><div class="eyebrow">CLASS ROLL CALL</div><p class="muted">Choose a class and session, then mark each learner. Changes apply when you save.</p></div></div>
+<section class="panel selector-panel"><form method="post" class="selector-form">{{ form.hidden_tag() }}<div class="selector-grid"><div class="form-field"><label class="field-label" for="subject_id">Class</label>{{ form.subject_id(class_='input select') }}</div><div class="form-field"><label class="field-label" for="date">Date</label>{{ form.date(class_='input') }}</div><div class="form-field"><label class="field-label" for="session">Session</label>{{ form.session(class_='input', placeholder='e.g. Morning / Period 2') }}</div><button class="btn btn-secondary load-button" name="intent" value="load" type="submit">Load roster</button></div></form></section>
+{% if selected_subject %}
+<section class="panel attendance-panel"><div class="attendance-heading"><div><span class="class-code-pill">{{ selected_subject.code }}</span><h2>{{ selected_subject.name }}</h2><p>{{ selected_subject.department.name }} · {{ selected_date.strftime('%A, %B %d, %Y') }} · {{ selected_session }}</p></div><div class="attendance-head-right">{% if record %}<span class="saved-label"><span></span> Previously saved · {{ record.items|length }} marked</span>{% else %}<span class="draft-label">New session</span>{% endif %}</div></div>
+  {% if roster %}
+  <form method="post" id="attendanceForm">{{ form.hidden_tag() }}<input type="hidden" name="subject_id" value="{{ selected_subject.id }}"><input type="hidden" name="date" value="{{ selected_date.isoformat() }}"><input type="hidden" name="session" value="{{ selected_session }}"><input type="hidden" name="loaded_subject" value="{{ selected_subject.id }}"><input type="hidden" name="loaded_date" value="{{ selected_date.isoformat() }}"><input type="hidden" name="loaded_session" value="{{ selected_session }}">
+    <div class="bulk-toolbar"><span><b>{{ roster|length }}</b> learners</span><div><span class="muted">Quick mark all:</span><button type="button" class="bulk-chip" data-status="present">Present</button><button type="button" class="bulk-chip" data-status="absent">Absent</button><button type="button" class="bulk-chip" data-status="late">Late</button><button type="button" class="bulk-chip" data-status="excused">Excused</button></div></div>
+    <div class="attendance-roster">
+      {% for student in roster %}{% set item = item_map.get(student.id) %}{% set chosen = item.status if item else 'present' %}
+      <div class="roster-row"><span class="roster-index">{{ '%02d'|format(loop.index) }}</span><span class="avatar avatar-muted">{{ student.name[:1]|upper }}</span><span class="roster-person"><b>{{ student.name }}</b><small>{{ student.email }}</small></span><div class="status-options" role="group" aria-label="Attendance status for {{ student.name }}">{% for value in ['present','absent','late','excused'] %}<label class="status-choice choice-{{ value }} {{ 'selected' if chosen == value else '' }}"><input type="radio" name="status_{{ student.id }}" value="{{ value }}" {{ 'checked' if chosen == value else '' }}><span>{{ value|title }}</span></label>{% endfor %}</div><input class="remarks-input" name="remarks_{{ student.id }}" value="{{ item.remarks if item else '' }}" maxlength="500" placeholder="Add note"></div>
+      {% endfor %}
+    </div>
+    <div class="attendance-footer"><small>Excused sessions do not reduce attendance percentage.</small><button class="btn btn-primary" name="intent" value="save" type="submit">Save attendance</button></div>
+  </form>
+  {% else %}<div class="empty-state">There are no active students enrolled in this class. Update class enrollment to take attendance.</div>{% endif %}
+</section>
+{% endif %}
+{% endblock %}
